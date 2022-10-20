@@ -1,0 +1,32 @@
+steps:
+  - name: python
+    entrypoint: pip
+    dir: 'app'
+    args: ['install', 
+           '-r',
+           'requirements.txt',
+           '--user']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'app'
+    args: ['build', 
+           '-t', 
+           '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/acgflask:${SHORT_SHA}',
+           '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'app'
+    args: ['push',
+           '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/acgflask:${SHORT_SHA}']
+  
+
+  - name: google/cloud-sdk
+    args: ['gcloud', 'run', 'deploy', 'helloworld-${SHORT_SHA}', 
+           '--image=${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/acgflask:${SHORT_SHA}', 
+           '--region',
+           '${_LOCATION}',
+           '--platform',
+           'managed', 
+           '--allow-unauthenticated',
+           '--port', 
+           '8000']
