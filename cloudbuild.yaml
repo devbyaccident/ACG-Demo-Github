@@ -20,13 +20,13 @@ steps:
            'us-east4-docker.pkg.dev/${PROJECT_ID}/acg-demo-registry/acgflask:${SHORT_SHA}']
   
 
-  # - name: google/cloud-sdk
-  #   args: ['gcloud', 'run', 'deploy', 'helloworld-${SHORT_SHA}', 
-  #          '--image=us-east4-docker.pkg.dev/${PROJECT_ID}/acg-demo-registry/acgflask:${SHORT_SHA}', 
-  #          '--region',
-  #          'us-east4',
-  #          '--platform',
-  #          'managed', 
-  #          '--allow-unauthenticated',
-  #          '--port', 
-  #          '8000']
+  - name: google/cloud-sdk
+    args: ['gcloud', 'run', 'deploy', 'acg-cloud-run', 
+           '--image=us-east4-docker.pkg.dev/${PROJECT_ID}/acg-demo-registry/acgflask:${SHORT_SHA}', 
+           '--region',
+           'us-east4',
+           '--platform',
+           'managed', 
+           '--allow-unauthenticated',
+           '--port', 
+           '8000']
